@@ -42,6 +42,8 @@ New-AzVm `
 -SubnetName $subnetName `
 -VirtualNetworkName $virtualNetworkName `
 -SecurityGroupName $networkSecurityGroupName `
+-Identity `
+-IdentityType SystemAssigned `
 -SshKeyName $sshKeyName -PublicIpAddressName $publicIpAddressName
 
 
@@ -59,15 +61,6 @@ Set-AzVMExtension @Params
 
 Write-Host "Install Azure Monitor Agent VM extention ->"
 
-$vm = Get-AzVM -ResourceGroupName $resourceGroupName -Name $vmName
-
-$vm.Identity = @{
-    Type = "SystemAssigned"
-}
-
-Update-AzVM `
--ResourceGroupName $resourceGroupName `
--VM $vm
 
 Set-AzVMExtension `
   -Name "AzureMonitorLinuxAgent" `
